@@ -25,8 +25,7 @@ public class Risk {
     @ManyToOne(fetch = FetchType.LAZY)
     private User creator;
 
-    public Risk(RiskGroup name) {
-        this.name = name;
+    public Risk() {
     }
 
     public int getId() {
