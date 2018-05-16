@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="header-left">
             <div class="top-menu">
                 <ul>
-                    <li class="active"><a href="index.html">HOME</a></li>
+                    <li class="active"><a href="index.jsp">HOME</a></li>
                     <li><a href="woman.html">MY ACCOUNT</a></li>
                     <li><a href="/evaluate">GO EVALUATION</a></li>
                 </ul>
@@ -483,7 +483,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li><a href="evaluate.html">STORE</a></li>
                 <li><a href="terms.html">TERMS & CONDITION</a></li>
                 <li><a href="evaluate.html">SHOW TO BUY</a></li>
-                <li><a href="index.html">SHIPPING</a></li>
+                <li><a href="index.jsp">SHIPPING</a></li>
                 <li><a href="evaluate.html">RETURNS</a></li>
                 <li><a href="single.html">SIZE CHART</a></li>
             </ul>
