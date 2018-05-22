@@ -17,7 +17,7 @@ public class Risk {
 
     @JoinColumn(name = "risk_group_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private RiskGroup name;
+    private RiskGroup group;
 
     private String description;
 
@@ -36,12 +36,12 @@ public class Risk {
         this.id = id;
     }
 
-    public RiskGroup getName() {
-        return name;
+    public RiskGroup getGroup() {
+        return group;
     }
 
-    public void setName(RiskGroup name) {
-        this.name = name;
+    public void setGroup(RiskGroup group) {
+        this.group = group;
     }
 
     public String getDescription() {
@@ -64,7 +64,7 @@ public class Risk {
     public String toString() {
         return "Risk{" +
                 "id=" + id +
-                ", name=" + name +
+                ", group=" + group +
                 ", description='" + description + '\'' +
                 ", creator=" + creator +
                 '}';

@@ -73,9 +73,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!---->
 <div class="men-fashions">
     <div class="container">
-        <c:forEach items="${requestScope.risks}" var="item">
-            <c:out value="${item}"/>
-        </c:forEach>
+        <table border="1">
+            <caption>Filled risks table</caption>
+            <tr>
+                <th>#</th>
+                <th>RiskGroup</th>
+                <th>Description</th>
+                <th>probability</th>
+                <th>damage</th>
+            </tr>
+            <c:forEach items="${requestScope.allRisks}" var="item" varStatus="number">
+                <tr>
+                    <td><c:out value="${item.id}"/></td>
+                    <td><c:out value="${item.group.name}"/></td>
+                    <td><c:out value="${item.description}"/></td>
+                    <td><input id="${item.id}" name="probability" type="number" min="1" max="5" value="1"/></td>
+                    <td><input id="${item.id}" name="damage" type="number" min="1" max="5" value="1"/></td>
+                </tr>
+            </c:forEach>
+        </table>
         <div class="clearfix"></div>
     </div>
 </div>

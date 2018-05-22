@@ -47,7 +47,7 @@ CREATE TABLE risks (
     ON DELETE CASCADE
 );
 
-CREATE TABLE fulled_risks (
+CREATE TABLE filled_risks (
   id          INT NOT NULL AUTO_INCREMENT,
   risk_id     INT,
   probability INT,
