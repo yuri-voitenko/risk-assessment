@@ -37,7 +37,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 <body>
 <!---->
-<div class="header men">
+<div class="header">
     <div class="container">
         <div class="header-left">
             <div class="top-menu">
@@ -73,28 +73,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!---->
 <div class="men-fashions">
     <div class="container">
-        <table border="1">
-            <caption>Filled risks table</caption>
-            <tr>
-                <th>#</th>
-                <th>RiskGroup</th>
-                <th>Description</th>
-                <th>probability</th>
-                <th>damage</th>
-            </tr>
-            <form id="filled_risks" action="/evaluate/process" method="POST">
-                <c:forEach items="${requestScope.allRisks}" var="item" varStatus="number">
-                    <tr>
-                        <td><c:out value="${item.id}"/></td>
-                        <td><c:out value="${item.group.name}"/></td>
-                        <td><c:out value="${item.description}"/></td>
-                        <td><input name="probability${item.id}" type="number" min="1" max="5" value="1"/></td>
-                        <td><input name="damage${item.id}" type="number" min="1" max="5" value="1"/></td>
-                    </tr>
-                </c:forEach>
-            </form>
-        </table>
-        <input type="submit" form="filled_risks">
         <div class="clearfix"></div>
     </div>
 </div>
