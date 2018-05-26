@@ -3,12 +3,14 @@ package ua.khpi.voitenko.riskassessment;
 import org.springframework.boot.context.embedded.InitParameterConfiguringServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
 import javax.annotation.Resource;
@@ -22,11 +24,16 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     private RiskGroupService riskGroupService;
 
     @Bean
-    public ViewResolver getViewResolver() {
+    public ViewResolver jspViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/");
         resolver.setSuffix(".jsp");
         return resolver;
+    }
+
+    @Bean
+    public View jsonViewResolver() {
+        return new MappingJackson2JsonView();
     }
 
     @Override

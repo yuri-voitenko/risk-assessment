@@ -1,7 +1,6 @@
 package ua.khpi.voitenko.riskassessment.model;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,7 +15,7 @@ public class FilledRisk {
     private int id;
 
     @JoinColumn(name = "risk_group_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Risk risk;
 
     private int probability;

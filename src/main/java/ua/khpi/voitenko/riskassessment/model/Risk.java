@@ -1,7 +1,6 @@
 package ua.khpi.voitenko.riskassessment.model;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,13 +15,13 @@ public class Risk {
     private int id;
 
     @JoinColumn(name = "risk_group_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private RiskGroup group;
 
     private String description;
 
     @JoinColumn(name = "creator_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User creator;
 
     public Risk() {

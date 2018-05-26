@@ -65,7 +65,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
         return getRateOfGroup().get(groupName);
     }
 
-    private Map<String, Integer> getRateOfGroup() {
+    public Map<String, Integer> getRateOfGroup() {
         if (isNull(rateOfGroup)) {
             rateOfGroup = riskGroupService
                     .findAllRiskGroups()

@@ -2,7 +2,6 @@ package ua.khpi.voitenko.riskassessment.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,7 +19,7 @@ public class User {
     private int id;
 
     @JoinColumn(name = "role_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Role role;
 
     private String email;
