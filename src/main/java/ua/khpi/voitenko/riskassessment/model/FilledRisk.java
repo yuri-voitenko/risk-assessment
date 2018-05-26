@@ -58,6 +58,10 @@ public class FilledRisk {
         this.damage = damage;
     }
 
+    public int calculateImpact() {
+        return probability * damage;
+    }
+
     @Override
     public String toString() {
         return "FilledRisk{" +
@@ -65,6 +69,7 @@ public class FilledRisk {
                 ", risk=" + risk +
                 ", probability=" + probability +
                 ", damage=" + damage +
+                ", impact=" + calculateImpact() +
                 '}';
     }
 }

@@ -9,13 +9,17 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
+    @Resource
+    private RiskGroupService riskGroupService;
 
     @Bean
     public ViewResolver getViewResolver() {
@@ -39,9 +43,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public InitParameterConfiguringServletContextInitializer initParamsInitializer() {
         Map<String, String> contextParams = new HashMap<>();
-        for (int i = 1; i < 8; i++) {
-            contextParams.put("riskGroupRate_" + i, "1");
-        }
+        riskGroupService.findAllRiskGroups()
+                .stream().map(group -> "riskGroupRate_" + group.getName())
+                .forEach(key -> contextParams.put(key, "1"));
         return new InitParameterConfiguringServletContextInitializer(contextParams);
     }
 }
