@@ -118,8 +118,6 @@ public class EvaluateController {
 
         final BigDecimal commonImpact = strategy.getOverAllImpact(filledRisks);
         final BigDecimal maxImpact = strategy.getOverMaxAllImpact(filledRisks);
-        final BigDecimal commonImpactInPercent = commonImpact.multiply(BigDecimal.valueOf(100))
-                .divide(maxImpact, 3, BigDecimal.ROUND_HALF_UP);
 
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
@@ -128,9 +126,9 @@ public class EvaluateController {
         dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_fine"), getAssessmentLimitValue("assessmentLimit_good")), "fine", "scale");
         dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_warn"), getAssessmentLimitValue("assessmentLimit_fine")), "warn", "scale");
         dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_critical"), getAssessmentLimitValue("assessmentLimit_warn")), "critical", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_fail"), getAssessmentLimitValue("assessmentLimit_critical")), "fail", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, 100, getAssessmentLimitValue("assessmentLimit_critical")), "fail", "scale");
 
-        dataSet.setValue(commonImpactInPercent, "current result", "current result");
+        dataSet.setValue(commonImpact, "current result", "current result");
 
         JFreeChart chart = ChartFactory.createStackedBarChart(
                 "Assessment result", StringUtils.EMPTY, StringUtils.EMPTY,
