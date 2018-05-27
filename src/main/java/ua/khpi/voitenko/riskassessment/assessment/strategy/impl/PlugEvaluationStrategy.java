@@ -8,21 +8,15 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@Order(value = 2)
-public class SimpleEvaluationStrategy extends AbstractEvaluationStrategy {
-
-    @Override
-    public BigDecimal calculateOverAllImpact(MapStringBigDecimalRef impactOfGroups) {
-        return impactOfGroups.get().values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
+@Order(value = 1)
+public class PlugEvaluationStrategy extends AbstractEvaluationStrategy {
     @Override
     public BigDecimal getOverAllImpact(List<FilledRisk> filledRisks) {
-        return calculateOverAllImpact(() -> getImpactOfGroups(filledRisks));
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public BigDecimal getOverMaxAllImpact(List<FilledRisk> filledRisks) {
-        return calculateOverAllImpact(() -> getMaxImpactOfGroups(filledRisks));
+        throw new UnsupportedOperationException();
     }
 }

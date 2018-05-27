@@ -1,5 +1,6 @@
 package ua.khpi.voitenko.riskassessment.assessment.strategy.impl;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 
@@ -7,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Component
+@Order(value = 3)
 public class ComplexEvaluationStrategy extends AbstractEvaluationStrategy {
     @Override
     public BigDecimal calculateOverAllImpact(MapFilledRiskBigDecimalRef impactOfRisks) {
@@ -37,6 +39,16 @@ public class ComplexEvaluationStrategy extends AbstractEvaluationStrategy {
         return un_13;
     }
 
+    @Override
+    public BigDecimal getOverAllImpact(List<FilledRisk> filledRisks) {
+        return calculateOverAllImpact(() -> getImpactOfRisks(filledRisks));
+    }
+
+    @Override
+    public BigDecimal getOverMaxAllImpact(List<FilledRisk> filledRisks) {
+        return calculateOverAllImpact(() -> getMaxImpactOfGroups(filledRisks));
+    }
+
     private BigDecimal getImpactByRiskId(MapFilledRiskBigDecimalRef impactOfRisks, int riskId) {
         final FilledRisk filledRisk =
                 impactOfRisks
@@ -45,15 +57,5 @@ public class ComplexEvaluationStrategy extends AbstractEvaluationStrategy {
                         .stream()
                         .filter(risk -> risk.getRisk().getId() == riskId).findFirst().get();
         return impactOfRisks.get().get(filledRisk);
-    }
-
-    @Override
-    public BigDecimal getOverAllImpact(List<FilledRisk> filledRisks) {
-        return null;
-    }
-
-    @Override
-    public BigDecimal getOverMaxAllImpact(List<FilledRisk> filledRisks) {
-        return null;
     }
 }
