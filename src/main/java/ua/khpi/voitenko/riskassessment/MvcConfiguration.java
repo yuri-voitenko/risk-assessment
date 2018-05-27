@@ -53,6 +53,12 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         riskGroupService.findAllRiskGroups()
                 .stream().map(group -> "riskGroupRate_" + group.getName())
                 .forEach(key -> contextParams.put(key, "1"));
+        contextParams.put("assessmentLimit_excellent", "15");
+        contextParams.put("assessmentLimit_good", "30");
+        contextParams.put("assessmentLimit_fine", "50");
+        contextParams.put("assessmentLimit_warn", "65");
+        contextParams.put("assessmentLimit_critical", "80");
+        contextParams.put("assessmentLimit_fail", "95");
         return new InitParameterConfiguringServletContextInitializer(contextParams);
     }
 }
