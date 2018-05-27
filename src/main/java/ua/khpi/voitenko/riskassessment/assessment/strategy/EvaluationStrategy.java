@@ -5,9 +5,26 @@ import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public interface EvaluationStrategy {
-    BigDecimal calculateOverAllImpact(final Map<String, BigDecimal> impactOfGroups);
+    interface MapStringBigDecimalRef extends Supplier<Map<String, BigDecimal>> {
+    }
+
+    interface MapFilledRiskBigDecimalRef extends Supplier<Map<FilledRisk, BigDecimal>> {
+    }
+
+    default BigDecimal calculateOverAllImpact(MapStringBigDecimalRef impactOfGroups) {
+        throw new UnsupportedOperationException();
+    }
+
+    default BigDecimal calculateOverAllImpact(MapFilledRiskBigDecimalRef impactOfRisks) {
+        throw new UnsupportedOperationException();
+    }
+
+    BigDecimal getOverAllImpact(final List<FilledRisk> filledRisks);
+
+    BigDecimal getOverMaxAllImpact(final List<FilledRisk> filledRisks);
 
     Map<FilledRisk, BigDecimal> getImpactOfRisks(final List<FilledRisk> filledRisks);
 
@@ -18,12 +35,4 @@ public interface EvaluationStrategy {
     Map<String, BigDecimal> getMaxImpactOfGroups(final List<FilledRisk> filledRisks);
 
     Map<String, Integer> getRateOfGroup();
-
-    default BigDecimal getOverAllImpact(final List<FilledRisk> filledRisks) {
-        return calculateOverAllImpact(getImpactOfGroups(filledRisks));
-    }
-
-    default BigDecimal getOverMaxAllImpact(final List<FilledRisk> filledRisks) {
-        return calculateOverAllImpact(getMaxImpactOfGroups(filledRisks));
-    }
 }

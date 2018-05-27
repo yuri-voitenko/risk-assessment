@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ua.khpi.voitenko.riskassessment.assessment.strategy.impl.AbstractEvaluationStrategy;
+import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.Risk;
 import ua.khpi.voitenko.riskassessment.service.RiskService;
@@ -36,7 +36,7 @@ public class EvaluateController {
     @Resource
     private RiskService riskService;
     @Resource
-    private AbstractEvaluationStrategy evaluationStrategy;
+    private EvaluationStrategy evaluationStrategy;
 
     @RequestMapping("/")
     public String evaluate(ModelMap map) {
