@@ -1,5 +1,6 @@
 package ua.khpi.voitenko.riskassessment.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -20,9 +21,12 @@ import ua.khpi.voitenko.riskassessment.model.Risk;
 import ua.khpi.voitenko.riskassessment.service.RiskService;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +41,8 @@ public class EvaluateController {
     private RiskService riskService;
     @Resource
     private List<EvaluationStrategy> evaluationStrategies;
+    @Resource
+    private ServletContext context;
 
     @RequestMapping("/")
     public String evaluate(ModelMap map) {
@@ -101,6 +107,54 @@ public class EvaluateController {
                 .forEach(pieDataSet::setValue);
 
         createPieChart3D(response, pieDataSet, "Impact of groups in percentage");
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/assessment_result", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public void getChartAssessmentResult(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+        int strategyIndex = Integer.parseInt(request.getParameter("strategy"));
+        EvaluationStrategy strategy = evaluationStrategies.get(strategyIndex);
+
+        final BigDecimal commonImpact = strategy.getOverAllImpact(filledRisks);
+        final BigDecimal maxImpact = strategy.getOverMaxAllImpact(filledRisks);
+        final BigDecimal commonImpactInPercent = commonImpact.multiply(BigDecimal.valueOf(100))
+                .divide(maxImpact, 3, BigDecimal.ROUND_HALF_UP);
+
+        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_excellent"), 0), "excellent", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_good"), getAssessmentLimitValue("assessmentLimit_excellent")), "good", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_fine"), getAssessmentLimitValue("assessmentLimit_good")), "fine", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_warn"), getAssessmentLimitValue("assessmentLimit_fine")), "warn", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_critical"), getAssessmentLimitValue("assessmentLimit_warn")), "critical", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_fail"), getAssessmentLimitValue("assessmentLimit_critical")), "fail", "scale");
+
+        dataSet.setValue(commonImpactInPercent, "current result", "current result");
+
+        JFreeChart chart = ChartFactory.createStackedBarChart(
+                "Assessment result", StringUtils.EMPTY, StringUtils.EMPTY,
+                dataSet, PlotOrientation.HORIZONTAL, true, true, false);
+
+        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+        renderer.setSeriesPaint(0, new Color(0, 34, 2));
+        renderer.setSeriesPaint(1, new Color(0, 54, 4));
+        renderer.setSeriesPaint(2, new Color(137, 255, 77));
+        renderer.setSeriesPaint(3, new Color(255, 255, 0));
+        renderer.setSeriesPaint(4, new Color(255, 165, 0));
+        renderer.setSeriesPaint(5, Color.red);
+
+        ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 1120, 200);
+        response.getOutputStream().close();
+    }
+
+    private BigDecimal getLimitInPercent(BigDecimal maxImpact, int currentLimit, int previousLimit) {
+        int delta = currentLimit - previousLimit;
+        return maxImpact.multiply(BigDecimal.valueOf(delta)).divide(BigDecimal.valueOf(100), 3, BigDecimal.ROUND_HALF_UP);
+    }
+
+    private int getAssessmentLimitValue(String key) {
+        return Integer.parseInt(context.getInitParameter(key));
     }
 
     private EvaluationStrategy getPlugEvaluationStrategy() {
