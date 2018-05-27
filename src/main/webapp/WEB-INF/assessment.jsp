@@ -75,6 +75,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="container">
         <img src="rate_of_groups" alt=""/>
         <img src="impact_of_groups" alt=""/>
+        <img src="number_of_risks_by_group" alt=""/>
+        <img src="impact_of_groups_in_percentage" alt=""/>
         <div class="clearfix"></div>
     </div>
 </div>

@@ -3,8 +3,12 @@ package ua.khpi.voitenko.riskassessment.controller;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.util.Rotation;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +26,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 @Controller
@@ -54,20 +60,22 @@ public class EvaluateController {
     }
 
     @RequestMapping(value = "/rate_of_groups", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void processEvaluate(HttpServletResponse response) throws IOException {
+    public void getChartRateOfGroups(HttpServletResponse response) throws IOException {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         evaluationStrategy.getRateOfGroup()
                 .forEach((k, v) -> dataSet.setValue(v, k, k));
         JFreeChart chart = ChartFactory.createBarChart("Rates of groups",
                 "Risk groups", "Value of rate", dataSet, PlotOrientation.VERTICAL,
                 false, true, false);
-        ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 550, 400);
+        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+        renderer.setItemMargin(-4);
+        ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 560, 400);
         response.getOutputStream().close();
     }
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/impact_of_groups", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void processEvaluate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getChartImpactOfGroups(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         evaluationStrategy.getImpactOfGroups(filledRisks)
@@ -75,43 +83,52 @@ public class EvaluateController {
         JFreeChart chart = ChartFactory.createBarChart("Impacts of groups",
                 "Risk groups", "Value of impact", dataSet, PlotOrientation.VERTICAL,
                 false, true, false);
-        ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 550, 400);
+        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+        renderer.setItemMargin(-4);
+        ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 560, 400);
         response.getOutputStream().close();
     }
 
-//    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-//    public void processEvaluate(HttpServletResponse response) {
-//        PieDataset pieDataset = createDataset();
-//        JFreeChart jFreeChart = createChart(pieDataset, "Name");
-//
-//        try {
-//            ChartUtilities.writeChartAsPNG(response.getOutputStream(), jFreeChart,750,400);
-//            response.getOutputStream().close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//    private JFreeChart createChart(PieDataset pieDataset, String name) {
-//        JFreeChart jFreeChart = ChartFactory.createPieChart3D(name, pieDataset, true, true, false);
-//        PiePlot3D plot = (PiePlot3D) jFreeChart.getPlot();
-//        plot.setStartAngle(290);
-//        plot.setDirection(Rotation.CLOCKWISE);
-//        plot.setForegroundAlpha(0.5f);
-//        return jFreeChart;
-//    }
-//
-//    private PieDataset createDataset() {
-//
-//        DefaultPieDataset dataset = new DefaultPieDataset();
-//        dataset.setValue("80-100", 120);
-//        dataset.setValue("60-79", 80);
-//        dataset.setValue("40-59", 20);
-//        dataset.setValue("20-39", 7);
-//        dataset.setValue("0-19", 3);
-//        return dataset;
-//    }
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/number_of_risks_by_group", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public void getChartNumberOfRisksByGroup(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+        DefaultPieDataset pieDataSet = new DefaultPieDataset();
+
+        filledRisks
+                .stream()
+                .collect(groupingBy(risk -> risk.getRisk().getGroup().getName(), counting()))
+                .forEach(pieDataSet::setValue);
+
+        JFreeChart jFreeChart = ChartFactory.createPieChart3D("Number of risks by group", pieDataSet, true, true, false);
+        PiePlot3D plot = (PiePlot3D) jFreeChart.getPlot();
+        plot.setStartAngle(290);
+        plot.setDirection(Rotation.CLOCKWISE);
+        plot.setForegroundAlpha(0.5f);
+
+        ChartUtilities.writeChartAsPNG(response.getOutputStream(), jFreeChart, 560, 400);
+        response.getOutputStream().close();
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/impact_of_groups_in_percentage", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public void getChartImpactOfGroupsInPercentage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+        DefaultPieDataset pieDataSet = new DefaultPieDataset();
+
+        evaluationStrategy.getImpactOfGroups(filledRisks)
+                .forEach(pieDataSet::setValue);
+
+        JFreeChart jFreeChart = ChartFactory.createPieChart3D("Impact of groups in percentage", pieDataSet, true, true, false);
+        PiePlot3D plot = (PiePlot3D) jFreeChart.getPlot();
+        plot.setStartAngle(290);
+        plot.setDirection(Rotation.CLOCKWISE);
+        plot.setForegroundAlpha(0.5f);
+
+        ChartUtilities.writeChartAsPNG(response.getOutputStream(), jFreeChart, 560, 400);
+        response.getOutputStream().close();
+    }
+
 
     private List<FilledRisk> getFilledRisks() {
         List<Risk> allRisks = riskService.findAllRisks();
