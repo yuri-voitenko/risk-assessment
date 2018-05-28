@@ -3,18 +3,24 @@ package ua.khpi.voitenko.riskassessment.assessment.strategy.impl;
 import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.RiskGroup;
+import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
+import ua.khpi.voitenko.riskassessment.model.User;
+import ua.khpi.voitenko.riskassessment.service.RiskGroupRateService;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
@@ -24,6 +30,10 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     private RiskGroupService riskGroupService;
     @Resource
     private ServletContext context;
+    @Resource
+    private RiskGroupRateService riskGroupRateService;
+    @Resource
+    private HttpSession session;
 
     private Map<String, Integer> rateOfGroup;
     private int sumOfRatesOfGroups;
@@ -64,12 +74,26 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     @Override
     public Map<String, Integer> getRateOfGroup() {
         if (isNull(rateOfGroup)) {
+            final List<RiskGroupRate> riskGroupRates = getRiskGroupRatesForCurrentUser();
+            if (isNotEmpty(riskGroupRates)) {
+                rateOfGroup = riskGroupRates
+                        .stream()
+                        .collect(toMap(value -> value.getRiskGroup().getName(), RiskGroupRate::getRate));
+            }
             rateOfGroup = riskGroupService
                     .findAllRiskGroups()
                     .stream()
-                    .collect(toMap(RiskGroup::getName, getRiskGroupRateFromContext()));
+                    .collect(toMap(RiskGroup::getName, group -> 1));
         }
         return rateOfGroup;
+    }
+
+    private List<RiskGroupRate> getRiskGroupRatesForCurrentUser() {
+        final User currentUser = (User) session.getAttribute("currentUser");
+        if (nonNull(currentUser)) {
+            return riskGroupRateService.findAllRiskGroupRatesByUserId(currentUser.getId());
+        }
+        return Collections.emptyList();
     }
 
     private BigDecimal multiplyImpactByCoefficient(int impactValue, final String groupName) {
@@ -97,13 +121,8 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
     private int getSumOfRatesOfGroups() {
         if (sumOfRatesOfGroups == 0) {
-            sumOfRatesOfGroups = rateOfGroup.values().stream().mapToInt(Integer::intValue).sum();
+            sumOfRatesOfGroups = getRateOfGroup().values().stream().mapToInt(Integer::intValue).sum();
         }
         return sumOfRatesOfGroups;
-    }
-
-    //    TODO: firstly get rates from DB, in other case get init parameters
-    private Function<RiskGroup, Integer> getRiskGroupRateFromContext() {
-        return group -> Integer.parseInt(context.getInitParameter("riskGroupRate_" + group.getName()));
     }
 }

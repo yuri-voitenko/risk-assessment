@@ -14,7 +14,7 @@ public class FilledRisk {
     @GeneratedValue
     private int id;
 
-    @JoinColumn(name = "risk_group_id")
+    @JoinColumn(name = "risk_id")
     @ManyToOne
     private Risk risk;
 

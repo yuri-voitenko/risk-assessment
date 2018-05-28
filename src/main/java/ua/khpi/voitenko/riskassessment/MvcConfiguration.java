@@ -11,17 +11,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
-    @Resource
-    private RiskGroupService riskGroupService;
 
     @Bean
     public ViewResolver jspViewResolver() {
@@ -50,9 +46,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public InitParameterConfiguringServletContextInitializer initParamsInitializer() {
         Map<String, String> contextParams = new HashMap<>();
-        riskGroupService.findAllRiskGroups()
-                .stream().map(group -> "riskGroupRate_" + group.getName())
-                .forEach(key -> contextParams.put(key, "1"));
         contextParams.put("assessmentLimit_excellent", "15");
         contextParams.put("assessmentLimit_good", "30");
         contextParams.put("assessmentLimit_fine", "50");

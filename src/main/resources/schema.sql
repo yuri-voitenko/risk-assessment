@@ -42,6 +42,9 @@ CREATE TABLE risks (
   description   VARCHAR(255) NOT NULL,
   creator_id    INT          NOT NULL,
   PRIMARY KEY (id),
+  CONSTRAINT FOREIGN KEY (risk_group_id) REFERENCES risk_groups (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
   CONSTRAINT FOREIGN KEY (creator_id) REFERENCES users (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
@@ -54,6 +57,20 @@ CREATE TABLE filled_risks (
   damage      INT,
   PRIMARY KEY (id),
   CONSTRAINT FOREIGN KEY (risk_id) REFERENCES risks (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE risk_group_rates (
+  id            INT NOT NULL AUTO_INCREMENT,
+  risk_group_id INT,
+  rate          INT,
+  owner_id      INT NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FOREIGN KEY (risk_group_id) REFERENCES risk_groups (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT FOREIGN KEY (owner_id) REFERENCES users (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
