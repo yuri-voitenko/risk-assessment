@@ -68,14 +68,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="header-left">
             <div class="top-menu">
                 <ul>
-                    <li><a href="/home">HOME</a></li>
-                    <li><a href="woman.html">WOMAN</a></li>
-                    <li class="active"><a href="/evaluate/">GO EVALUATION</a></li>
+                    <li><a href="/">HOME</a></li>
+                    <c:if test="${not empty sessionScope.currentUser}">
+                        <li><a href="/account/">MY ACCOUNT</a></li>
+                    </c:if>
+                    <li><a href="/evaluate/">GO EVALUATION</a></li>
                 </ul>
             </div>
         </div>
         <div class="logo">
-            <a href="/home/"><img src="/resources/images/logo.png" alt=""/></a>
+            <a href="/"><img src="/resources/images/logo.png" alt=""/></a>
         </div>
         <div class="header-right">
             <div class="currency">

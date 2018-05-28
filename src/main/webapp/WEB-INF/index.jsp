@@ -67,9 +67,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="top-menu">
                 <ul>
                     <li class="active"><a href="/">HOME</a></li>
-                    <%--<c:if test="${not empty sessionScope.currentUser}">--%>
-                    <li><a href="/account/">MY ACCOUNT</a></li>
-                    <%--</c:if>--%>
+                    <c:if test="${not empty sessionScope.currentUser}">
+                        <li><a href="/account/">MY ACCOUNT</a></li>
+                    </c:if>
                     <li><a href="/evaluate/">GO EVALUATION</a></li>
                 </ul>
                 <!-- script-for-menu -->

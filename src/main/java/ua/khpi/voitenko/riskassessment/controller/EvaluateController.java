@@ -77,7 +77,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/impact_of_groups", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartImpactOfGroups(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+    public void getChartImpactOfGroups(@SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         getPlugEvaluationStrategy().getImpactOfGroups(filledRisks)
                 .forEach((k, v) -> dataSet.setValue(v, k, k));
@@ -86,7 +86,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/number_of_risks_by_group", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartNumberOfRisksByGroup(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+    public void getChartNumberOfRisksByGroup(@SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultPieDataset pieDataSet = new DefaultPieDataset();
 
         filledRisks
@@ -99,7 +99,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/impact_of_groups_in_percentage", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartImpactOfGroupsInPercentage(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+    public void getChartImpactOfGroupsInPercentage(@SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultPieDataset pieDataSet = new DefaultPieDataset();
 
         getPlugEvaluationStrategy().getImpactOfGroups(filledRisks)
@@ -110,7 +110,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/assessment_result", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartAssessmentResult(@RequestParam("strategy") String strategy, @SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+    public void getChartAssessmentResult(@RequestParam String strategy, @SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         int strategyIndex = Integer.parseInt(strategy);
         EvaluationStrategy evaluationStrategy = evaluationStrategies.get(strategyIndex);
 

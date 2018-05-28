@@ -40,9 +40,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="header-left">
             <div class="top-menu">
                 <ul>
-                    <li><a href="/home">HOME</a></li>
-                    <li class="active"><a href="woman.html">WOMAN</a></li>
-                    <li><a href="man.html">MAN</a></li>
+                    <li><a href="/">HOME</a></li>
+                    <c:if test="${not empty sessionScope.currentUser}">
+                        <li><a href="/account/">MY ACCOUNT</a></li>
+                    </c:if>
+                    <li><a href="/evaluate/">GO EVALUATION</a></li>
                 </ul>
             </div>
         </div>
@@ -80,10 +82,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <th>Rate</th>
                     </tr>
                     <form id="group_ranking" action="/account/update/group_rates/" method="POST">
-                        <c:forEach items="${requestScope.riskGroups}" var="group" varStatus="number">
+                        <c:forEach items="${requestScope.riskGroupRates}" var="rgp" varStatus="number">
                             <tr>
-                                <td><c:out value="${group.name}"/></td>
-                                <td><input name="rank${group.id}" type="number" min="1" max="5" value="1"/></td>
+                                <td><c:out value="${rgp.riskGroup.name}"/></td>
+                                <td><input name="rank${rgp.riskGroup.id}" type="number" min="1" max="5"
+                                           value="${rgp.rate}"/></td>
                             </tr>
                         </c:forEach>
                     </form>
