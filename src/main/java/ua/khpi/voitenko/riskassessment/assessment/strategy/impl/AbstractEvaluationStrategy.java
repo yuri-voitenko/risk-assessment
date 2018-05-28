@@ -102,6 +102,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
         return sumOfRatesOfGroups;
     }
 
+    //    TODO: firstly get rates from DB, in other case get init parameters
     private Function<RiskGroup, Integer> getRiskGroupRateFromContext() {
         return group -> Integer.parseInt(context.getInitParameter("riskGroupRate_" + group.getName()));
     }

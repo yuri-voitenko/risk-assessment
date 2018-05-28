@@ -4,6 +4,7 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,7 +67,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="top-menu">
                 <ul>
                     <li class="active"><a href="/">HOME</a></li>
-                    <li><a href="woman.html">MY ACCOUNT</a></li>
+                    <%--<c:if test="${not empty sessionScope.currentUser}">--%>
+                    <li><a href="/account/">MY ACCOUNT</a></li>
+                    <%--</c:if>--%>
                     <li><a href="/evaluate/">GO EVALUATION</a></li>
                 </ul>
                 <!-- script-for-menu -->
