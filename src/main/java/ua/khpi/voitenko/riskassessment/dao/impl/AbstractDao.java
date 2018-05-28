@@ -33,6 +33,11 @@ public class AbstractDao<T> implements CommonDao<T> {
     }
 
     @Override
+    public void insert(T entity) {
+        em.persist(entity);
+    }
+
+    @Override
     public T findById(int id) {
         return em.getReference(genericType, id);
     }

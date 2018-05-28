@@ -79,11 +79,12 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
                 rateOfGroup = riskGroupRates
                         .stream()
                         .collect(toMap(value -> value.getRiskGroup().getName(), RiskGroupRate::getRate));
+            } else {
+                rateOfGroup = riskGroupService
+                        .findAllRiskGroups()
+                        .stream()
+                        .collect(toMap(RiskGroup::getName, group -> 1));
             }
-            rateOfGroup = riskGroupService
-                    .findAllRiskGroups()
-                    .stream()
-                    .collect(toMap(RiskGroup::getName, group -> 1));
         }
         return rateOfGroup;
     }
@@ -91,7 +92,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     private List<RiskGroupRate> getRiskGroupRatesForCurrentUser() {
         final User currentUser = (User) session.getAttribute("currentUser");
         if (nonNull(currentUser)) {
-            return riskGroupRateService.findAllRiskGroupRatesByUserId(currentUser.getId());
+            return riskGroupRateService.findAllRiskGroupRatesByUserId(currentUser);
         }
         return Collections.emptyList();
     }
