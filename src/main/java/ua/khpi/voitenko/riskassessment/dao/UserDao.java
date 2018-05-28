@@ -8,4 +8,6 @@ public interface UserDao extends CommonDao<User> {
     default List<User> findByName() {
         throw new UnsupportedOperationException();
     }
+
+    User getUserByEmailAndPassword(String email, String password);
 }

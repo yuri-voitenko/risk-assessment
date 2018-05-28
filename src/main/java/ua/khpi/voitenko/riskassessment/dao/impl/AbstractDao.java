@@ -18,6 +18,10 @@ public class AbstractDao<T> implements CommonDao<T> {
     @PersistenceContext
     private EntityManager em;
 
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
     public AbstractDao() {
         this.genericType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), AbstractDao.class);
     }

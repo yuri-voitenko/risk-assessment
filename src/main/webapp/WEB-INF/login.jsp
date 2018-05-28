@@ -5,6 +5,7 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,14 +102,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="col-md-6 log">
             <p>Welcome, please enter the folling to continue.</p>
             <p>If you have previously Login with us, <span>click here</span></p>
-            <form>
+            <form:form method="POST" action="/login/process/" modelAttribute="user">
                 <h5>User Name:</h5>
-                <input type="text" value="">
+                <form:input path="email"/>
                 <h5>Password:</h5>
-                <input type="password" value="">
+                <form:password path="password"/>
                 <input type="submit" value="Login">
                 <a href="#">Forgot Password ?</a>
-            </form>
+            </form:form>
         </div>
         <div class="col-md-6 login-right">
             <h3>NEW REGISTRATION</h3>

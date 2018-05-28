@@ -16,7 +16,7 @@ INSERT INTO users
 VALUES
   (0, "vlad@gmail.com", "vlados", MD5("Bullsh1t007$"), "Vlad", "Bykov"),
   (1, "pupok@yandex.ru", "pupok", MD5("BigBoss999*"), "Vasya", "Pupkin"),
-  (2, "rusich@mail.ru", "maloy", MD5("NotRaci%st789"), "Niha", "Petrov"),
+  (2, "expert@gmail.com", "maloy", MD5("Expert01"), "Niha", "Petrov"),
   (3, "voit@gmail.com", "voit", MD5("Voitenko!335"), "Yuri", "Voitenko");
 
 INSERT INTO risk_groups (name, mandatory)
