@@ -9,12 +9,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
     <title>Shopper an E-Commerce online Shopping Category Flat Bootstarp responsive Website Template| Home ::
         w3layouts</title>
-    <link href="resources/css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="resources/js/jquery.min.js"></script>
+    <script src="/resources/js/jquery.min.js"></script>
     <!-- Custom Theme files -->
-    <link href="resources/css/hover.css" rel="stylesheet" media="all">
-    <link href="resources/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/resources/css/hover.css" rel="stylesheet" media="all">
+    <link href="/resources/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <!-- Custom Theme files -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -30,8 +30,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!--webfont-->
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
     <!---- tabs---->
-    <link type="text/css" rel="stylesheet" href="resources/css/easy-responsive-tabs.css"/>
-    <script src="resources/js/easyResponsiveTabs.js" type="text/javascript"></script>
+    <link type="text/css" rel="stylesheet" href="/resources/css/easy-responsive-tabs.css"/>
+    <script src="/resources/js/easyResponsiveTabs.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#horizontalTab').easyResponsiveTabs({
@@ -81,7 +81,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
         </div>
         <div class="logo">
-            <a href="/"><img src="resources/images/logo.png" alt=""/></a>
+            <a href="/"><img src="/resources/images/logo.png" alt=""/></a>
         </div>
         <div class="header-right">
             <div class="currency">
@@ -92,7 +92,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="signin">
                 <div class="cart-sec">
-                    <a href="cart.html"><img href="cart.html" src="resources/images/cart.png" alt=""/>(0)</a></div>
+                    <a href="cart.html"><img href="cart.html" src="/resources/images/cart.png" alt=""/>(0)</a></div>
                 <ul>
                     <li><a href="registration.html">REGISTRATION</a> <span>/<span> &nbsp;</li>
                     <li><a href="/login/"> LOGIN</a></li>
@@ -103,7 +103,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 <!---->
-<script src="resources/js/responsiveslides.min.js"></script>
+<script src="/resources/js/responsiveslides.min.js"></script>
 <script>
     $(function () {
         $("#slider").responsiveSlides({
@@ -119,34 +119,34 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="callbacks_container">
         <ul class="rslides" id="slider">
             <li>
-                <img src="resources/images/bnr.jpg" alt="">
+                <img src="/resources/images/bnr.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr2.jpg" alt="">
+                <img src="/resources/images/bnr2.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr3.jpg" alt="">
+                <img src="/resources/images/bnr3.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr4.jpg" alt="">
+                <img src="/resources/images/bnr4.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr5.jpg" alt="">
+                <img src="/resources/images/bnr5.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr6.jpg" alt="">
+                <img src="/resources/images/bnr6.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr7.jpg" alt="">
+                <img src="/resources/images/bnr7.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr8.jpg" alt="">
+                <img src="/resources/images/bnr8.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr9.jpg" alt="">
+                <img src="/resources/images/bnr9.jpg" alt="">
             </li>
             <li>
-                <img src="resources/images/bnr10.jpg" alt="">
+                <img src="/resources/images/bnr10.jpg" alt="">
             </li>
         </ul>
     </div>
@@ -167,7 +167,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="course_demo1">
                         <ul id="flexiselDemo1">
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -178,7 +178,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c2.jpg" alt=""/>
+                                <img src="/resources/images/c2.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -189,7 +189,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c3.jpg" alt=""/>
+                                <img src="/resources/images/c3.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -200,7 +200,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c4.jpg" alt=""/>
+                                <img src="/resources/images/c4.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -211,7 +211,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -222,7 +222,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c3.jpg" alt=""/>
+                                <img src="/resources/images/c3.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -234,7 +234,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </li>
                         </ul>
                     </div>
-                    <link rel="stylesheet" href="resources/css/flexslider.css" type="text/css" media="screen"/>
+                    <link rel="stylesheet" href="/resources/css/flexslider.css" type="text/css" media="screen"/>
                     <script type="text/javascript">
                         $(window).load(function () {
                             $("#flexiselDemo1").flexisel({
@@ -262,7 +262,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         });
                     </script>
-                    <script type="text/javascript" src="resources/js/jquery.flexisel.js"></script>
+                    <script type="text/javascript" src="/resources/js/jquery.flexisel.js"></script>
                 </div>
                 <!---/tab1----->
                 <!---tab2----->
@@ -270,7 +270,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="course_demo1">
                         <ul id="flexiselDemo2">
                             <li class="g1">
-                                <img src="resources/images/c4.jpg" alt=""/>
+                                <img src="/resources/images/c4.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -281,7 +281,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c3.jpg" alt=""/>
+                                <img src="/resources/images/c3.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -292,7 +292,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c2.jpg" alt=""/>
+                                <img src="/resources/images/c2.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -303,7 +303,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -314,7 +314,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c4.jpg" alt=""/>
+                                <img src="/resources/images/c4.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -325,7 +325,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -337,7 +337,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </li>
                         </ul>
                     </div>
-                    <link rel="stylesheet" href="resources/css/flexslider.css" type="text/css" media="screen"/>
+                    <link rel="stylesheet" href="/resources/css/flexslider.css" type="text/css" media="screen"/>
                     <script type="text/javascript">
                         $(window).load(function () {
                             $("#flexiselDemo2").flexisel({
@@ -365,7 +365,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         });
                     </script>
-                    <script type="text/javascript" src="resources/js/jquery.flexisel.js"></script>
+                    <script type="text/javascript" src="/resources/js/jquery.flexisel.js"></script>
                 </div>
                 <!---/tab2----->
                 <!---tab3----->
@@ -373,7 +373,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="course_demo1">
                         <ul id="flexiselDemo3">
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -384,7 +384,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c2.jpg" alt=""/>
+                                <img src="/resources/images/c2.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -395,7 +395,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c3.jpg" alt=""/>
+                                <img src="/resources/images/c3.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -406,7 +406,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c4.jpg" alt=""/>
+                                <img src="/resources/images/c4.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -417,7 +417,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c1.jpg" alt=""/>
+                                <img src="/resources/images/c1.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -428,7 +428,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="clearfix"></div>
                             </li>
                             <li class="g1">
-                                <img src="resources/images/c3.jpg" alt=""/>
+                                <img src="/resources/images/c3.jpg" alt=""/>
                                 <a href="single.html">
                                     <div class="caption">
                                         <span></span>
@@ -440,7 +440,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </li>
                         </ul>
                     </div>
-                    <link rel="stylesheet" href="resources/css/flexslider.css" type="text/css" media="screen"/>
+                    <link rel="stylesheet" href="/resources/css/flexslider.css" type="text/css" media="screen"/>
                     <script type="text/javascript">
                         $(window).load(function () {
                             $("#flexiselDemo3").flexisel({
@@ -468,7 +468,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         });
                     </script>
-                    <script type="text/javascript" src="resources/js/jquery.flexisel.js"></script>
+                    <script type="text/javascript" src="/resources/js/jquery.flexisel.js"></script>
                 </div>
                 <!---//tab3----->
             </div>

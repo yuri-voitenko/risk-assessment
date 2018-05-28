@@ -6,6 +6,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,12 +98,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!---->
 <div class="login">
+    <c:if test="${not empty requestScope.errorMessages}">
+        <div class="alert alert-danger text-center">
+            <c:forEach items="${ requestScope.errorMessages}" var="mesg">
+                <strong>Oops! Something got wrong... </strong><c:out value="${mesg}"/>
+            </c:forEach>
+        </div>
+    </c:if>
     <div class="container">
         <h2>Login</h2>
         <div class="col-md-6 log">
             <p>Welcome, please enter the folling to continue.</p>
             <p>If you have previously Login with us, <span>click here</span></p>
-            <form:form method="POST" action="/login/process/" modelAttribute="user">
+            <form:form method="POST" action="/login/process/" modelAttribute="userDTO">
                 <h5>User Name:</h5>
                 <form:input path="email"/>
                 <h5>Password:</h5>
