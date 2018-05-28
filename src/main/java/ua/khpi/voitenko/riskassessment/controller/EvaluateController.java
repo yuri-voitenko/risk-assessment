@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.Risk;
@@ -75,8 +77,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/impact_of_groups", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartImpactOfGroups(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+    public void getChartImpactOfGroups(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         getPlugEvaluationStrategy().getImpactOfGroups(filledRisks)
                 .forEach((k, v) -> dataSet.setValue(v, k, k));
@@ -85,8 +86,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/number_of_risks_by_group", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartNumberOfRisksByGroup(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+    public void getChartNumberOfRisksByGroup(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultPieDataset pieDataSet = new DefaultPieDataset();
 
         filledRisks
@@ -99,8 +99,7 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/impact_of_groups_in_percentage", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartImpactOfGroupsInPercentage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
+    public void getChartImpactOfGroupsInPercentage(@SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         DefaultPieDataset pieDataSet = new DefaultPieDataset();
 
         getPlugEvaluationStrategy().getImpactOfGroups(filledRisks)
@@ -111,13 +110,12 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/assessment_result", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartAssessmentResult(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<FilledRisk> filledRisks = (List<FilledRisk>) request.getSession().getAttribute("filledRisks");
-        int strategyIndex = Integer.parseInt(request.getParameter("strategy"));
-        EvaluationStrategy strategy = evaluationStrategies.get(strategyIndex);
+    public void getChartAssessmentResult(@RequestParam("strategy") String strategy, @SessionAttribute("filledRisks") List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+        int strategyIndex = Integer.parseInt(strategy);
+        EvaluationStrategy evaluationStrategy = evaluationStrategies.get(strategyIndex);
 
-        final BigDecimal commonImpact = strategy.getOverAllImpact(filledRisks);
-        final BigDecimal maxImpact = strategy.getOverMaxAllImpact(filledRisks);
+        final BigDecimal commonImpact = evaluationStrategy.getOverAllImpact(filledRisks);
+        final BigDecimal maxImpact = evaluationStrategy.getOverMaxAllImpact(filledRisks);
 
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
