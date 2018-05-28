@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="header-left">
             <div class="top-menu">
                 <ul>
-                    <li class="active"><a href="index.jsp">HOME</a></li>
+                    <li class="active"><a href="/">HOME</a></li>
                     <li><a href="woman.html">MY ACCOUNT</a></li>
                     <li><a href="/evaluate/">GO EVALUATION</a></li>
                 </ul>
@@ -95,7 +95,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <a href="cart.html"><img href="cart.html" src="resources/images/cart.png" alt=""/>(0)</a></div>
                 <ul>
                     <li><a href="registration.html">REGISTRATION</a> <span>/<span> &nbsp;</li>
-                    <li><a href="login.html"> LOGIN</a></li>
+                    <li><a href="/login/"> LOGIN</a></li>
                 </ul>
             </div>
         </div>
@@ -482,8 +482,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li><a href="contact.html">CONTACT</a></li>
                 <li><a href="evaluate.html">STORE</a></li>
                 <li><a href="terms.html">TERMS & CONDITION</a></li>
-                <li><a href="evaluate.html">SHOW TO BUY</a></li>
-                <li><a href="index.jsp">SHIPPING</a></li>
+                <li><a href="/evaluate/">GO EVALUATION</a></li>
+                <li><a href="/">HOME</a></li>
                 <li><a href="evaluate.html">RETURNS</a></li>
                 <li><a href="single.html">SIZE CHART</a></li>
             </ul>
