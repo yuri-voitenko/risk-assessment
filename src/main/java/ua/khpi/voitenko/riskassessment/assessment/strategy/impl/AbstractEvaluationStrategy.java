@@ -33,6 +33,9 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     @Resource
     private HttpSession session;
 
+    private List<RiskGroupRate> cachedRiskGroupRates;
+    private int cachedSumOfRates;
+
     public AbstractEvaluationStrategy() {
     }
 
@@ -68,12 +71,17 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
     @Override
     public List<RiskGroupRate> getRiskGroupRates() {
-        final List<RiskGroupRate> riskGroupRates = getRiskGroupRatesForCurrentUser();
-        if (isNotEmpty(riskGroupRates)) {
-            return riskGroupRates;
-        } else {
-            return getDefaultRiskGroupRates();
+        clearCacheIfRequired();
+        if (isNull(cachedRiskGroupRates)) {
+            updateSessionVariable();
+            final List<RiskGroupRate> riskGroupRates = getRiskGroupRatesForCurrentUser();
+            if (isNotEmpty(riskGroupRates)) {
+                cachedRiskGroupRates = riskGroupRates;
+            } else {
+                cachedRiskGroupRates = getDefaultRiskGroupRates();
+            }
         }
+        return cachedRiskGroupRates;
     }
 
     @Override
@@ -106,7 +114,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     private int getRateOfGroupByName(final String groupName) {
-        return this.getRiskGroupRates()
+        return getRiskGroupRates()
                 .stream()
                 .filter(rgp -> rgp.getRiskGroup().getName().equalsIgnoreCase(groupName))
                 .findFirst()
@@ -125,6 +133,27 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     private int getSumOfRatesOfGroups() {
-        return this.getRiskGroupRates().stream().mapToInt(RiskGroupRate::getRate).sum();
+        clearCacheIfRequired();
+        if (cachedSumOfRates == 0) {
+            updateSessionVariable();
+            cachedSumOfRates = getRiskGroupRates().stream().mapToInt(RiskGroupRate::getRate).sum();
+        }
+        return cachedSumOfRates;
+    }
+
+    private void clearCacheIfRequired() {
+        if (isInvalidatedCache()) {
+            cachedRiskGroupRates = null;
+            cachedSumOfRates = 0;
+        }
+    }
+
+    private void updateSessionVariable() {
+        session.setAttribute("isInvalidatedCache", false);
+    }
+
+    private boolean isInvalidatedCache() {
+        final Boolean isInvalidatedCache = (Boolean) session.getAttribute("isInvalidatedCache");
+        return nonNull(isInvalidatedCache) && isInvalidatedCache;
     }
 }

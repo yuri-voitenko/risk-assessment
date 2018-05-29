@@ -31,6 +31,7 @@ public class LoginController {
     public String login(@ModelAttribute("userDTO") User userDTO, ModelMap modelMap, HttpServletRequest req) {
         final User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
         if (nonNull(user)) {
+            req.getSession().setAttribute("isInvalidatedCache", true);
             req.getSession().setAttribute("currentUser", user);
             return "index";
         } else {

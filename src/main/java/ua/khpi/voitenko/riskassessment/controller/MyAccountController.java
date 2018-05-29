@@ -49,6 +49,7 @@ public class MyAccountController {
                     return riskGroupRate;
                 })
                 .forEach(rate -> riskGroupRateService.saveRiskGroupRate(rate));
+        request.getSession().setAttribute("isInvalidatedCache", true);
         return "account";
     }
 
