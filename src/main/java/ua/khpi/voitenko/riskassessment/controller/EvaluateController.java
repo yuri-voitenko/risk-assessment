@@ -70,8 +70,11 @@ public class EvaluateController {
     @RequestMapping(value = "/rate_of_groups", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public void getChartRateOfGroups(HttpServletResponse response) throws IOException {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        getPlugEvaluationStrategy().getRateOfGroup()
-                .forEach((k, v) -> dataSet.setValue(v, k, k));
+        getPlugEvaluationStrategy().getRiskGroupRates()
+                .forEach(rgp -> {
+                    final String groupName = rgp.getRiskGroup().getName();
+                    dataSet.setValue(rgp.getRate(), groupName, groupName);
+                });
         createBarChart(response, dataSet, "Rates of groups", "Risk groups", "Value of rate");
     }
 

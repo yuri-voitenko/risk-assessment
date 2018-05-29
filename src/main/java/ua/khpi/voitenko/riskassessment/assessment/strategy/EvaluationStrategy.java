@@ -1,6 +1,7 @@
 package ua.khpi.voitenko.riskassessment.assessment.strategy;
 
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
+import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,5 +35,7 @@ public interface EvaluationStrategy {
 
     Map<String, BigDecimal> getMaxImpactOfGroups(final List<FilledRisk> filledRisks);
 
-    Map<String, Integer> getRateOfGroup();
+    List<RiskGroupRate> getRiskGroupRates();
+
+    List<RiskGroupRate> getDefaultRiskGroupRates();
 }

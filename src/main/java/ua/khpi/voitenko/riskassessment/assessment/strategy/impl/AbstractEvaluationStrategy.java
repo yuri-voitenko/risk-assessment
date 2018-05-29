@@ -2,7 +2,6 @@ package ua.khpi.voitenko.riskassessment.assessment.strategy.impl;
 
 import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
-import ua.khpi.voitenko.riskassessment.model.RiskGroup;
 import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
 import ua.khpi.voitenko.riskassessment.model.User;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupRateService;
@@ -18,6 +17,7 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
@@ -67,26 +67,25 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     @Override
-    public Map<String, Integer> getRateOfGroup() {
+    public List<RiskGroupRate> getRiskGroupRates() {
         final List<RiskGroupRate> riskGroupRates = getRiskGroupRatesForCurrentUser();
         if (isNotEmpty(riskGroupRates)) {
-            return getRateOfGroupFromDB(riskGroupRates);
+            return riskGroupRates;
         } else {
-            return getDefaultRateOfGroup();
+            return getDefaultRiskGroupRates();
         }
     }
 
-    private Map<String, Integer> getDefaultRateOfGroup() {
-        return riskGroupService
-                .findAllRiskGroups()
+    @Override
+    public List<RiskGroupRate> getDefaultRiskGroupRates() {
+        return riskGroupService.findAllRiskGroups()
                 .stream()
-                .collect(toMap(RiskGroup::getName, group -> DEFAULT_RATE_GROUP_VALUE));
-    }
-
-    private Map<String, Integer> getRateOfGroupFromDB(List<RiskGroupRate> riskGroupRates) {
-        return riskGroupRates
-                .stream()
-                .collect(toMap(value -> value.getRiskGroup().getName(), RiskGroupRate::getRate));
+                .map(group -> {
+                    final RiskGroupRate riskGroupRate = new RiskGroupRate();
+                    riskGroupRate.setRiskGroup(group);
+                    riskGroupRate.setRate(DEFAULT_RATE_GROUP_VALUE);
+                    return riskGroupRate;
+                }).collect(toList());
     }
 
     private List<RiskGroupRate> getRiskGroupRatesForCurrentUser() {
@@ -107,7 +106,12 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     private int getRateOfGroupByName(final String groupName) {
-        return getRateOfGroup().get(groupName);
+        return this.getRiskGroupRates()
+                .stream()
+                .filter(rgp -> rgp.getRiskGroup().getName().equalsIgnoreCase(groupName))
+                .findFirst()
+                .get()
+                .getRate();
     }
 
     private String getGroupName(FilledRisk risk) {
@@ -121,6 +125,6 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     private int getSumOfRatesOfGroups() {
-        return getRateOfGroup().values().stream().mapToInt(Integer::intValue).sum();
+        return this.getRiskGroupRates().stream().mapToInt(RiskGroupRate::getRate).sum();
     }
 }
