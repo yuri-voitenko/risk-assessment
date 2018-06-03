@@ -76,15 +76,10 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
             if (isNotEmpty(riskGroupRates)) {
                 cachedRiskGroupRates = riskGroupRates;
             } else {
-                cachedRiskGroupRates = getDefaultRiskGroupRates();
+                cachedRiskGroupRates = riskGroupRateService.findAllInitialSettings();
             }
         }
         return cachedRiskGroupRates;
-    }
-
-    @Override
-    public List<RiskGroupRate> getDefaultRiskGroupRates() {
-        return riskGroupRateService.findAllInitialSettings();
     }
 
     private List<RiskGroupRate> getRiskGroupRatesForCurrentUser() {

@@ -25,14 +25,12 @@ public class MyAccountController {
     private RiskGroupService riskGroupService;
     @Resource
     private RiskGroupRateService riskGroupRateService;
-    @Resource(name = "plugEvaluationStrategy")
-    private EvaluationStrategy evaluationStrategy;
 
     @RequestMapping("/")
     public String viewMyAccountPage(@SessionAttribute(required = false) User currentUser, ModelMap map) {
         List<RiskGroupRate> riskGroupRates = riskGroupRateService.findAllRiskGroupRatesByUserId(currentUser);
         if (CollectionUtils.isEmpty(riskGroupRates)) {
-            riskGroupRates = evaluationStrategy.getDefaultRiskGroupRates();
+            riskGroupRates = riskGroupRateService.findAllInitialSettings();
         }
         map.put("riskGroupRates", riskGroupRates);
         return "account";

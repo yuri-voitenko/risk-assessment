@@ -36,6 +36,4 @@ public interface EvaluationStrategy {
     Map<String, BigDecimal> getMaxImpactOfGroups(final List<FilledRisk> filledRisks);
 
     List<RiskGroupRate> getRiskGroupRates();
-
-    List<RiskGroupRate> getDefaultRiskGroupRates();
 }
