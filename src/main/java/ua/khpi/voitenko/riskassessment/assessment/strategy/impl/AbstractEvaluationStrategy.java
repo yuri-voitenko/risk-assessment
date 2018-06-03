@@ -116,7 +116,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     private int getRateOfGroupByName(final String groupName) {
         return getRiskGroupRates()
                 .stream()
-                .filter(rgp -> rgp.getRiskGroup().getName().equalsIgnoreCase(groupName))
+                .filter(rgr -> rgr.getRiskGroup().getName().equalsIgnoreCase(groupName))
                 .findFirst()
                 .get()
                 .getRate();

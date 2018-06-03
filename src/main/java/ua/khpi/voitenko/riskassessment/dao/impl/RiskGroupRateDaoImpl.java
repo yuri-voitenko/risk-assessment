@@ -12,7 +12,7 @@ public class RiskGroupRateDaoImpl extends AbstractDao<RiskGroupRate> implements 
     @Override
     public List<RiskGroupRate> findAllByUserId(User user) {
         return getEntityManager()
-                .createQuery("SELECT rgp from RiskGroupRate rgp WHERE rgp.owner = :user", RiskGroupRate.class).
+                .createQuery("SELECT rgr from RiskGroupRate rgr WHERE rgr.owner = :user", RiskGroupRate.class).
                         setParameter("user", user).getResultList();
     }
 }

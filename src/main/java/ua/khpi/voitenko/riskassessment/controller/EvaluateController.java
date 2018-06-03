@@ -71,9 +71,9 @@ public class EvaluateController {
     public void getChartRateOfGroups(HttpServletResponse response) throws IOException {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         getPlugEvaluationStrategy().getRiskGroupRates()
-                .forEach(rgp -> {
-                    final String groupName = rgp.getRiskGroup().getName();
-                    dataSet.setValue(rgp.getRate(), groupName, groupName);
+                .forEach(rgr -> {
+                    final String groupName = rgr.getRiskGroup().getName();
+                    dataSet.setValue(rgr.getRate(), groupName, groupName);
                 });
         createBarChart(response, dataSet, "Rates of groups", "Risk groups", "Value of rate");
     }

@@ -82,11 +82,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <th>Rate</th>
                     </tr>
                     <form id="group_ranking" action="/account/update/group_rates/" method="POST">
-                        <c:forEach items="${requestScope.riskGroupRates}" var="rgp" varStatus="number">
+                        <c:forEach items="${requestScope.riskGroupRates}" var="rgr" varStatus="number">
                             <tr>
-                                <td><c:out value="${rgp.riskGroup.name}"/></td>
-                                <td><input name="rank${rgp.riskGroup.id}" type="number" min="1" max="5"
-                                           value="${rgp.rate}"/></td>
+                                <td><c:out value="${rgr.riskGroup.name}"/></td>
+                                <td><input name="rank${rgr.riskGroup.id}" type="number" min="1" max="5"
+                                           value="${rgr.rate}"/></td>
                             </tr>
                         </c:forEach>
                     </form>
