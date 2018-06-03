@@ -93,6 +93,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </table>
                 <input type="submit" form="group_ranking">
             </div>
+            <div class="title">
+                <table border="1">
+                    <caption>Assessment limits</caption>
+                    <tr>
+                        <th>Assessment</th>
+                        <th>Limit</th>
+                    </tr>
+                    <form id="assessment_ranking" action="/account/update/assessment_limits/" method="POST">
+                        <c:forEach items="${requestScope.assessmentLimits}" var="al">
+                            <tr>
+                                <td><c:out value="${al.assessment}"/></td>
+                                <td><input name="rank${al.assessment}" type="number" min="1" max="100"
+                                           value="${al.border}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </form>
+                </table>
+                <input type="submit" form="assessment_ranking">
+            </div>
         </div>
         <div class="col-md-3 side-bar account-menu">
             <div class="categories">

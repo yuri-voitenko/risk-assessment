@@ -22,11 +22,11 @@ import ua.khpi.voitenko.riskassessment.model.Assessment;
 import ua.khpi.voitenko.riskassessment.model.AssessmentLimit;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.Risk;
+import ua.khpi.voitenko.riskassessment.model.User;
 import ua.khpi.voitenko.riskassessment.service.AssessmentLimitService;
 import ua.khpi.voitenko.riskassessment.service.RiskService;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -48,8 +49,6 @@ public class EvaluateController {
     private AssessmentLimitService assessmentLimitService;
     @Resource
     private List<EvaluationStrategy> evaluationStrategies;
-    @Resource
-    private ServletContext context;
 
     @RequestMapping("/")
     public String evaluate(ModelMap map) {
@@ -118,7 +117,8 @@ public class EvaluateController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/assessment_result", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public void getChartAssessmentResult(@RequestParam String strategy, @SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
+    public void getChartAssessmentResult(@RequestParam String strategy, @SessionAttribute(required = false) User currentUser,
+                                         @SessionAttribute List<FilledRisk> filledRisks, HttpServletResponse response) throws IOException {
         int strategyIndex = Integer.parseInt(strategy);
         EvaluationStrategy evaluationStrategy = evaluationStrategies.get(strategyIndex);
 
@@ -127,14 +127,14 @@ public class EvaluateController {
 
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
-        final List<AssessmentLimit> initialSettings = assessmentLimitService.findAllInitialSettings();
+        final List<AssessmentLimit> limits = getAssessmentLimits(currentUser);
 
-        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.EXCELLENT), 0), "excellent", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.GOOD), getLimitValue(initialSettings, Assessment.EXCELLENT)), "good", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.FINE), getLimitValue(initialSettings, Assessment.GOOD)), "fine", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.WARN), getLimitValue(initialSettings, Assessment.FINE)), "warn", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.CRITICAL), getLimitValue(initialSettings, Assessment.WARN)), "critical", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, 100, getLimitValue(initialSettings, Assessment.CRITICAL)), "fail", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(limits, Assessment.EXCELLENT), 0), "excellent", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(limits, Assessment.GOOD), getLimitValue(limits, Assessment.EXCELLENT)), "good", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(limits, Assessment.FINE), getLimitValue(limits, Assessment.GOOD)), "fine", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(limits, Assessment.WARN), getLimitValue(limits, Assessment.FINE)), "warn", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(limits, Assessment.CRITICAL), getLimitValue(limits, Assessment.WARN)), "critical", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, 100, getLimitValue(limits, Assessment.CRITICAL)), "fail", "scale");
 
         dataSet.setValue(commonImpact, "current result", "current result");
 
@@ -152,6 +152,12 @@ public class EvaluateController {
 
         ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 1120, 200);
         response.getOutputStream().close();
+    }
+
+    private List<AssessmentLimit> getAssessmentLimits(User currentUser) {
+        return isNull(currentUser) ?
+                assessmentLimitService.findAllInitialSettings() :
+                assessmentLimitService.findAllAssessmentLimitsByUserId(currentUser);
     }
 
     private int getLimitValue(List<AssessmentLimit> initialSettings, Assessment key) {

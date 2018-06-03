@@ -6,14 +6,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
+import ua.khpi.voitenko.riskassessment.model.Assessment;
+import ua.khpi.voitenko.riskassessment.model.AssessmentLimit;
 import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
 import ua.khpi.voitenko.riskassessment.model.User;
+import ua.khpi.voitenko.riskassessment.service.AssessmentLimitService;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupRateService;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -25,6 +28,8 @@ public class MyAccountController {
     private RiskGroupService riskGroupService;
     @Resource
     private RiskGroupRateService riskGroupRateService;
+    @Resource
+    private AssessmentLimitService assessmentLimitService;
 
     @RequestMapping("/")
     public String viewMyAccountPage(@SessionAttribute(required = false) User currentUser, ModelMap map) {
@@ -33,6 +38,11 @@ public class MyAccountController {
             riskGroupRates = riskGroupRateService.findAllInitialSettings();
         }
         map.put("riskGroupRates", riskGroupRates);
+        List<AssessmentLimit> assessmentLimits = assessmentLimitService.findAllAssessmentLimitsByUserId(currentUser);
+        if (CollectionUtils.isEmpty(assessmentLimits)) {
+            assessmentLimits = assessmentLimitService.findAllInitialSettings();
+        }
+        map.put("assessmentLimits", assessmentLimits);
         return "account";
     }
 
@@ -45,12 +55,40 @@ public class MyAccountController {
         } else {
             riskGroupRates.forEach(rgr -> {
                 final int groupId = rgr.getRiskGroup().getId();
-                rgr.setRate(getGroupRankFromRequest(request, groupId));
+                rgr.setRate(getIntValueFromRequest(request, groupId));
                 riskGroupRateService.saveRiskGroupRate(rgr);
             });
         }
         request.getSession().setAttribute("isInvalidatedCache", true);
         return "redirect:" + "/account/";
+    }
+
+    @RequestMapping(value = "/update/assessment_limits", method = RequestMethod.POST)
+    public String updateAssessmentLimits(@SessionAttribute User currentUser, HttpServletRequest request) {
+        List<AssessmentLimit> assessmentLimits = assessmentLimitService.findAllAssessmentLimitsByUserId(currentUser);
+        if (CollectionUtils.isEmpty(assessmentLimits)) {
+            getNewAssessmentLimits(currentUser, request)
+                    .forEach(al -> assessmentLimitService.saveAssessmentLimit(al));
+        } else {
+            assessmentLimits
+                    .forEach(al -> {
+                        al.setBorder(getIntValueFromRequest(request, al.getAssessment()));
+                        assessmentLimitService.saveAssessmentLimit(al);
+                    });
+        }
+        return "redirect:" + "/account/";
+    }
+
+    private List<AssessmentLimit> getNewAssessmentLimits(@SessionAttribute User currentUser, HttpServletRequest request) {
+        return Arrays.stream(Assessment.values())
+                .map(key -> {
+                    final AssessmentLimit limit = new AssessmentLimit();
+                    limit.setAssessment(key);
+                    limit.setOwner(currentUser);
+                    limit.setBorder(getIntValueFromRequest(request, key));
+                    return limit;
+                })
+                .collect(toList());
     }
 
     private List<RiskGroupRate> getNewRiskGroupRates(@SessionAttribute User currentUser, HttpServletRequest request) {
@@ -61,12 +99,12 @@ public class MyAccountController {
                     final RiskGroupRate riskGroupRate = new RiskGroupRate();
                     riskGroupRate.setRiskGroup(riskGroup);
                     riskGroupRate.setOwner(currentUser);
-                    riskGroupRate.setRate(getGroupRankFromRequest(request, riskGroup.getId()));
+                    riskGroupRate.setRate(getIntValueFromRequest(request, riskGroup.getId()));
                     return riskGroupRate;
                 }).collect(toList());
     }
 
-    private int getGroupRankFromRequest(HttpServletRequest request, int groupId) {
-        return Integer.parseInt(request.getParameter("rank" + groupId));
+    private int getIntValueFromRequest(HttpServletRequest request, Object key) {
+        return Integer.parseInt(request.getParameter("rank" + key));
     }
 }
