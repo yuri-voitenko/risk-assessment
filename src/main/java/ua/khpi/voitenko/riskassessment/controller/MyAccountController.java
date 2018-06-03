@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Controller
 @RequestMapping("/account")
 public class MyAccountController {
@@ -38,7 +40,23 @@ public class MyAccountController {
 
     @RequestMapping(value = "/update/group_rates", method = RequestMethod.POST)
     public String updateGroupRates(@SessionAttribute User currentUser, HttpServletRequest request) {
-        riskGroupService
+        List<RiskGroupRate> riskGroupRates = riskGroupRateService.findAllRiskGroupRatesByUserId(currentUser);
+        if (CollectionUtils.isEmpty(riskGroupRates)) {
+            getNewRiskGroupRates(currentUser, request)
+                    .forEach(rate -> riskGroupRateService.saveRiskGroupRate(rate));
+        } else {
+            riskGroupRates.forEach(rgr -> {
+                final int groupId = rgr.getRiskGroup().getId();
+                rgr.setRate(getGroupRankFromRequest(request, groupId));
+                riskGroupRateService.saveRiskGroupRate(rgr);
+            });
+        }
+        request.getSession().setAttribute("isInvalidatedCache", true);
+        return "redirect:" + "/account/";
+    }
+
+    private List<RiskGroupRate> getNewRiskGroupRates(@SessionAttribute User currentUser, HttpServletRequest request) {
+        return riskGroupService
                 .findAllRiskGroups()
                 .stream()
                 .map(riskGroup -> {
@@ -47,10 +65,7 @@ public class MyAccountController {
                     riskGroupRate.setOwner(currentUser);
                     riskGroupRate.setRate(getGroupRankFromRequest(request, riskGroup.getId()));
                     return riskGroupRate;
-                })
-                .forEach(rate -> riskGroupRateService.saveRiskGroupRate(rate));
-        request.getSession().setAttribute("isInvalidatedCache", true);
-        return "account";
+                }).collect(toList());
     }
 
     private int getGroupRankFromRequest(HttpServletRequest request, int groupId) {

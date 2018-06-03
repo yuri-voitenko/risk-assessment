@@ -21,6 +21,6 @@ public class RiskGroupRateServiceImpl implements RiskGroupRateService {
 
     @Override
     public void saveRiskGroupRate(RiskGroupRate riskGroupRate) {
-        riskGroupRateDao.insert(riskGroupRate);
+        riskGroupRateDao.insertOrUpdate(riskGroupRate);
     }
 }

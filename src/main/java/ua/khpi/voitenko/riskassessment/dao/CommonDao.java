@@ -12,7 +12,7 @@ public interface CommonDao<T> {
         throw new UnsupportedOperationException();
     }
 
-    default void insert(T entity) {
+    default void insertOrUpdate(T entity) {
         throw new UnsupportedOperationException();
     }
 

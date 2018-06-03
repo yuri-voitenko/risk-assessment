@@ -33,8 +33,8 @@ public class AbstractDao<T> implements CommonDao<T> {
     }
 
     @Override
-    public void insert(T entity) {
-        em.persist(entity);
+    public void insertOrUpdate(T entity) {
+        em.merge(entity);
     }
 
     @Override
