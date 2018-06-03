@@ -1,6 +1,5 @@
 package ua.khpi.voitenko.riskassessment;
 
-import org.springframework.boot.context.embedded.InitParameterConfiguringServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.View;
@@ -11,9 +10,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebMvc
@@ -41,17 +37,5 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
-    }
-
-    @Bean
-    public InitParameterConfiguringServletContextInitializer initParamsInitializer() {
-        Map<String, String> contextParams = new HashMap<>();
-        contextParams.put("assessmentLimit_excellent", "15");
-        contextParams.put("assessmentLimit_good", "30");
-        contextParams.put("assessmentLimit_fine", "50");
-        contextParams.put("assessmentLimit_warn", "65");
-        contextParams.put("assessmentLimit_critical", "80");
-        contextParams.put("assessmentLimit_fail", "95");
-        return new InitParameterConfiguringServletContextInitializer(contextParams);
     }
 }

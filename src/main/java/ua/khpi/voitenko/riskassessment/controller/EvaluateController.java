@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
+import ua.khpi.voitenko.riskassessment.model.Assessment;
+import ua.khpi.voitenko.riskassessment.model.AssessmentLimit;
 import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.Risk;
+import ua.khpi.voitenko.riskassessment.service.AssessmentLimitService;
 import ua.khpi.voitenko.riskassessment.service.RiskService;
 
 import javax.annotation.Resource;
@@ -41,6 +44,8 @@ import static java.util.stream.Collectors.toList;
 public class EvaluateController {
     @Resource
     private RiskService riskService;
+    @Resource
+    private AssessmentLimitService assessmentLimitService;
     @Resource
     private List<EvaluationStrategy> evaluationStrategies;
     @Resource
@@ -122,12 +127,14 @@ public class EvaluateController {
 
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_excellent"), 0), "excellent", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_good"), getAssessmentLimitValue("assessmentLimit_excellent")), "good", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_fine"), getAssessmentLimitValue("assessmentLimit_good")), "fine", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_warn"), getAssessmentLimitValue("assessmentLimit_fine")), "warn", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, getAssessmentLimitValue("assessmentLimit_critical"), getAssessmentLimitValue("assessmentLimit_warn")), "critical", "scale");
-        dataSet.setValue(getLimitInPercent(maxImpact, 100, getAssessmentLimitValue("assessmentLimit_critical")), "fail", "scale");
+        final List<AssessmentLimit> initialSettings = assessmentLimitService.findAllInitialSettings();
+
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.EXCELLENT), 0), "excellent", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.GOOD), getLimitValue(initialSettings, Assessment.EXCELLENT)), "good", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.FINE), getLimitValue(initialSettings, Assessment.GOOD)), "fine", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.WARN), getLimitValue(initialSettings, Assessment.FINE)), "warn", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, getLimitValue(initialSettings, Assessment.CRITICAL), getLimitValue(initialSettings, Assessment.WARN)), "critical", "scale");
+        dataSet.setValue(getLimitInPercent(maxImpact, 100, getLimitValue(initialSettings, Assessment.CRITICAL)), "fail", "scale");
 
         dataSet.setValue(commonImpact, "current result", "current result");
 
@@ -147,13 +154,17 @@ public class EvaluateController {
         response.getOutputStream().close();
     }
 
+    private int getLimitValue(List<AssessmentLimit> initialSettings, Assessment key) {
+        return initialSettings
+                .stream()
+                .filter(al -> key.equals(al.getAssessment()))
+                .findFirst().get()
+                .getBorder();
+    }
+
     private BigDecimal getLimitInPercent(BigDecimal maxImpact, int currentLimit, int previousLimit) {
         int delta = currentLimit - previousLimit;
         return maxImpact.multiply(BigDecimal.valueOf(delta)).divide(BigDecimal.valueOf(100), 3, BigDecimal.ROUND_HALF_UP);
-    }
-
-    private int getAssessmentLimitValue(String key) {
-        return Integer.parseInt(context.getInitParameter(key));
     }
 
     private EvaluationStrategy getPlugEvaluationStrategy() {

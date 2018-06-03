@@ -10,4 +10,6 @@ public interface AssessmentLimitService {
     List<AssessmentLimit> findAllAssessmentLimitsByUserId(User user);
 
     void saveAssessmentLimit(AssessmentLimit assessmentLimit);
+
+    List<AssessmentLimit> findAllInitialSettings();
 }
