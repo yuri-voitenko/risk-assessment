@@ -75,6 +75,17 @@ CREATE TABLE risk_group_rates (
     ON DELETE CASCADE
 );
 
+CREATE TABLE assessment_limits (
+  id         INT          NOT NULL AUTO_INCREMENT,
+  assessment VARCHAR(255) NOT NULL,
+  border     INT          NOT NULL,
+  owner_id   INT          NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FOREIGN KEY (owner_id) REFERENCES users (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
 -- DELIMITER //
 -- CREATE TRIGGER field_risk_validator
 -- BEFORE INSERT
