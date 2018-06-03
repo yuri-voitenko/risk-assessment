@@ -19,4 +19,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             return null;
         }
     }
+
+    @Override
+    public User getAdminUser() {
+        return getUserByEmailAndPassword("admin@gmail.com", "nimda");
+    }
 }

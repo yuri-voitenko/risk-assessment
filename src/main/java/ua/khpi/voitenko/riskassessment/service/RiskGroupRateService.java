@@ -10,4 +10,6 @@ public interface RiskGroupRateService {
     List<RiskGroupRate> findAllRiskGroupRatesByUserId(User user);
 
     void saveRiskGroupRate(RiskGroupRate riskGroupRate);
+
+    List<RiskGroupRate> findAllInitialSettings();
 }

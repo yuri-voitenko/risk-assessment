@@ -61,6 +61,16 @@ VALUES
   (7, "Изменение законодательства", 1),
   (7, "Неадекватность действий менеджмента органов государственного управления", 1);
 
+INSERT INTO risk_group_rates (risk_group_id, rate, owner_id)
+VALUES
+  (1, 1, 1),
+  (2, 1, 1),
+  (3, 1, 1),
+  (4, 1, 1),
+  (5, 1, 1),
+  (6, 1, 1),
+  (7, 1, 1);
+
 INSERT INTO assessment_limits (assessment, border, owner_id)
 VALUES
   ("EXCELLENT", 15, 1),

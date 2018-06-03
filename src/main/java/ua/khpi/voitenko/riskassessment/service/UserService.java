@@ -9,4 +9,6 @@ public interface UserService {
     List<User> findAllUsers();
 
     User login(String email, String password);
+
+    User getAdminUser();
 }

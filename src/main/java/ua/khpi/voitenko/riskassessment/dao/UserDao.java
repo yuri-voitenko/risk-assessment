@@ -10,4 +10,6 @@ public interface UserDao extends CommonDao<User> {
     }
 
     User getUserByEmailAndPassword(String email, String password);
+
+    User getAdminUser();
 }

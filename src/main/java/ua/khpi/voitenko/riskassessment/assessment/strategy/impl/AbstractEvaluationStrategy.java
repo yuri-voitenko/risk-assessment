@@ -17,14 +17,12 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
     private static final int MAX_IMPACT_VALUE = 25;
-    private static final int DEFAULT_RATE_GROUP_VALUE = 1;
 
     @Resource
     private RiskGroupService riskGroupService;
@@ -86,14 +84,7 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
     @Override
     public List<RiskGroupRate> getDefaultRiskGroupRates() {
-        return riskGroupService.findAllRiskGroups()
-                .stream()
-                .map(group -> {
-                    final RiskGroupRate riskGroupRate = new RiskGroupRate();
-                    riskGroupRate.setRiskGroup(group);
-                    riskGroupRate.setRate(DEFAULT_RATE_GROUP_VALUE);
-                    return riskGroupRate;
-                }).collect(toList());
+        return riskGroupRateService.findAllInitialSettings();
     }
 
     private List<RiskGroupRate> getRiskGroupRatesForCurrentUser() {
