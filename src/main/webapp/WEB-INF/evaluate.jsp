@@ -92,17 +92,34 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${requestScope.allRisks}" var="item" varStatus="number">
-                <tr>
-                    <td><c:out value="${item.id}"/></td>
-                    <td><c:out value="${item.group.name}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><input name="probability${item.id}" type="number" min="1" max="5" value="1"
-                               form="filled_risks"/></td>
-                    <td><input name="damage${item.id}" type="number" min="1" max="5" value="1" form="filled_risks"/>
-                    </td>
-                </tr>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${not empty sessionScope.filledRisks}">
+                    <c:forEach items="${sessionScope.filledRisks}" var="item">
+                        <tr>
+                            <td><c:out value="${item.risk.id}"/></td>
+                            <td><c:out value="${item.risk.group.name}"/></td>
+                            <td><c:out value="${item.risk.description}"/></td>
+                            <td><input name="probability${item.risk.id}" type="number" min="1" max="5"
+                                       value="${item.probability}" form="filled_risks"/></td>
+                            <td><input name="damage${item.risk.id}" type="number" min="1" max="5"
+                                       value="${item.damage}" form="filled_risks"/></td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach items="${requestScope.allRisks}" var="item">
+                        <tr>
+                            <td><c:out value="${item.id}"/></td>
+                            <td><c:out value="${item.group.name}"/></td>
+                            <td><c:out value="${item.description}"/></td>
+                            <td><input name="probability${item.id}" type="number" min="1" max="5" value="1"
+                                       form="filled_risks"/></td>
+                            <td><input name="damage${item.id}" type="number" min="1" max="5" value="1"
+                                       form="filled_risks"/></td>
+                        </tr>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
         <input type="submit" form="filled_risks">
