@@ -13,6 +13,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/js/custom.js"></script>
     <!-- Custom Theme files -->
     <link href="/resources/css/hover.css" rel="stylesheet" media="all">
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -74,7 +75,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="men-fashions">
     <div class="container">
         <div class="col-md-9 fashions">
-            <div class="title">
+            <div class="title js-rate-table group-ranking">
                 <table border="1">
                     <caption>Risk groups</caption>
                     <tr>
@@ -93,7 +94,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </table>
                 <input type="submit" form="group_ranking">
             </div>
-            <div class="title">
+            <div class="title js-rate-table interval-ranking" style="display: none;">
                 <table border="1">
                     <caption>Assessment limits</caption>
                     <tr>
@@ -117,8 +118,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="categories">
                 <h3>MENU</h3>
                 <ul>
-                    <li><a href="#">Group ranking</a></li>
-                    <li><a href="#">Interval ranking</a></li>
+                    <li><a class="js-group-ranking">Group ranking</a></li>
+                    <li><a class="js-interval-ranking">Interval ranking</a></li>
                 </ul>
             </div>
         </div>
