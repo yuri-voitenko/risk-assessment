@@ -14,9 +14,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/js/jquery.tablesorter.js"></script>
+    <script src="/resources/js/custom.js"></script>
     <!-- Custom Theme files -->
     <link href="/resources/css/hover.css" rel="stylesheet" media="all">
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/resources/css/theme.green.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/resources/css/theme.default.css" rel="stylesheet" type="text/css" media="all"/>
 
     <!-- Custom Theme files -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +36,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     } </script>
     <!--webfont-->
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 </head>
 <body>
@@ -75,8 +78,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!---->
 <div class="men-fashions">
     <div class="container">
-        <table border="1">
+        <form id="filled_risks" action="/evaluate/process" method="POST">
+        </form>
+        <table class="sortTable tablesorter tablesorter-green">
             <caption>Filled risks table</caption>
+            <thead>
             <tr>
                 <th>#</th>
                 <th>RiskGroup</th>
@@ -84,17 +90,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <th>probability</th>
                 <th>damage</th>
             </tr>
-            <form id="filled_risks" action="/evaluate/process" method="POST">
-                <c:forEach items="${requestScope.allRisks}" var="item" varStatus="number">
-                    <tr>
-                        <td><c:out value="${item.id}"/></td>
-                        <td><c:out value="${item.group.name}"/></td>
-                        <td><c:out value="${item.description}"/></td>
-                        <td><input name="probability${item.id}" type="number" min="1" max="5" value="1"/></td>
-                        <td><input name="damage${item.id}" type="number" min="1" max="5" value="1"/></td>
-                    </tr>
-                </c:forEach>
-            </form>
+            </thead>
+            <tbody>
+            <c:forEach items="${requestScope.allRisks}" var="item" varStatus="number">
+                <tr>
+                    <td><c:out value="${item.id}"/></td>
+                    <td><c:out value="${item.group.name}"/></td>
+                    <td><c:out value="${item.description}"/></td>
+                    <td><input name="probability${item.id}" type="number" min="1" max="5" value="1"
+                               form="filled_risks"/></td>
+                    <td><input name="damage${item.id}" type="number" min="1" max="5" value="1" form="filled_risks"/>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
         <input type="submit" form="filled_risks">
         <div class="clearfix"></div>
