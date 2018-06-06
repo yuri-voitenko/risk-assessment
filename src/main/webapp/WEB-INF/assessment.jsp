@@ -9,8 +9,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shopper an E-Commerce online Shopping Category Flat Bootstarp responsive Website Template| Man ::
-        w3layouts</title>
+    <title>Risk assessment | Result</title>
     <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/resources/js/jquery.min.js"></script>
