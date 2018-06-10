@@ -35,10 +35,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 @Controller
 @RequestMapping("/evaluate")
@@ -155,9 +156,16 @@ public class EvaluateController {
     }
 
     private List<AssessmentLimit> getAssessmentLimits(User currentUser) {
-        return isNull(currentUser) ?
-                assessmentLimitService.findAllInitialSettings() :
-                assessmentLimitService.findAllAssessmentLimitsByUserId(currentUser);
+        if (nonNull(currentUser)) {
+            final List<AssessmentLimit> userLimits = assessmentLimitService.findAllAssessmentLimitsByUserId(currentUser);
+            if (isEmpty(userLimits)) {
+                return assessmentLimitService.findAllInitialSettings();
+            } else {
+                return userLimits;
+            }
+        } else {
+            return assessmentLimitService.findAllInitialSettings();
+        }
     }
 
     private int getLimitValue(List<AssessmentLimit> initialSettings, Assessment key) {
