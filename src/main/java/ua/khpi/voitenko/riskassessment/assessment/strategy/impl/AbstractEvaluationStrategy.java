@@ -5,7 +5,6 @@ import ua.khpi.voitenko.riskassessment.model.FilledRisk;
 import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
 import ua.khpi.voitenko.riskassessment.model.User;
 import ua.khpi.voitenko.riskassessment.service.RiskGroupRateService;
-import ua.khpi.voitenko.riskassessment.service.RiskGroupService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -24,8 +23,6 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
 
     private static final int MAX_IMPACT_VALUE = 25;
 
-    @Resource
-    private RiskGroupService riskGroupService;
     @Resource
     private RiskGroupRateService riskGroupRateService;
     @Resource
@@ -135,11 +132,11 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     }
 
     private void updateSessionVariable() {
-        session.setAttribute("isInvalidatedCache", false);
+        session.setAttribute("isInvalidatedCacheFor" + getClass().getSimpleName(), false);
     }
 
     private boolean isInvalidatedCache() {
-        final Boolean isInvalidatedCache = (Boolean) session.getAttribute("isInvalidatedCache");
+        final Boolean isInvalidatedCache = (Boolean) session.getAttribute("isInvalidatedCacheFor" + getClass().getSimpleName());
         return nonNull(isInvalidatedCache) && isInvalidatedCache;
     }
 }

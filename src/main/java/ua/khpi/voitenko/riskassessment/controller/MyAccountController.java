@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.Assessment;
 import ua.khpi.voitenko.riskassessment.model.AssessmentLimit;
 import ua.khpi.voitenko.riskassessment.model.RiskGroupRate;
@@ -30,6 +31,8 @@ public class MyAccountController {
     private RiskGroupRateService riskGroupRateService;
     @Resource
     private AssessmentLimitService assessmentLimitService;
+    @Resource
+    private List<EvaluationStrategy> evaluationStrategies;
 
     @RequestMapping("/")
     public String viewMyAccountPage(@SessionAttribute(required = false) User currentUser, ModelMap map) {
@@ -59,7 +62,9 @@ public class MyAccountController {
                 riskGroupRateService.saveRiskGroupRate(rgr);
             });
         }
-        request.getSession().setAttribute("isInvalidatedCache", true);
+        evaluationStrategies
+                .forEach(strategy ->
+                        request.getSession().setAttribute("isInvalidatedCacheFor" + strategy.getClass().getSimpleName(), true));
         return "redirect:" + "/account/";
     }
 

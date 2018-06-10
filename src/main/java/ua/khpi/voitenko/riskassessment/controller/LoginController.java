@@ -6,12 +6,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.khpi.voitenko.riskassessment.assessment.strategy.EvaluationStrategy;
 import ua.khpi.voitenko.riskassessment.model.User;
 import ua.khpi.voitenko.riskassessment.service.UserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.List;
 
 import static java.util.Objects.nonNull;
 
@@ -20,6 +22,8 @@ import static java.util.Objects.nonNull;
 public class LoginController {
     @Resource
     private UserService userService;
+    @Resource
+    private List<EvaluationStrategy> evaluationStrategies;
 
     @RequestMapping("/")
     public String viewLoginPage(Model model) {
@@ -31,7 +35,9 @@ public class LoginController {
     public String login(@ModelAttribute("userDTO") User userDTO, ModelMap modelMap, HttpServletRequest req) {
         final User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
         if (nonNull(user)) {
-            req.getSession().setAttribute("isInvalidatedCache", true);
+            evaluationStrategies
+                    .forEach(strategy ->
+                            req.getSession().setAttribute("isInvalidatedCacheFor" + strategy.getClass().getSimpleName(), true));
             req.getSession().setAttribute("currentUser", user);
             return "index";
         } else {
